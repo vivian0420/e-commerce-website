@@ -1,0 +1,85 @@
+body {
+    background-color: lightcyan !important;
+}
+
+/* head section */
+.navbar a {
+    text-decoration: none;
+}
+
+.list-items li {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 800px;
+    cursor: pointer;
+    position: relative;
+}
+
+.list-items li::before {  
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: peru;
+    transition: width 0.3s ease;
+}
+
+.list-items li a:hover {
+    color: peru;
+}
+
+.list-items li:hover::before {  
+    width:100%
+}
+
+.list-items li.active::before {
+    width:100%
+}
+
+.bi-snow3 {
+    font-size: 24px;
+}
+
+.bi-cart {
+    font-size: 24px;
+}
+
+.button {
+    border: 1px solid #7a7a7a;
+    background-color: white;
+    font-size: 20px;
+    width: 70px;
+    height: 35px;
+    border-radius: 75px;
+    
+}
+
+.button:hover {
+    background: #f3f3f3;
+}   
+
+.button:active {
+    background: peru;
+}
+
+.nav-cart-count {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -25px;
+    margin-left: -25px;
+    border-radius: 11px;
+    font-size: 14px;
+    background: red;
+    color: white;
+}
+
+.footer {
+    padding-top: 30px;
+    height: 100px;
+    box-shadow: 5px 10px gray; 
+}
