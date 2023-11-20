@@ -9,10 +9,12 @@ body {
 
 .list-items li {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 18px;
+    font-size: 1.5vw;
     font-weight: 800px;
     cursor: pointer;
     position: relative;
+    
+    padding-top: 40px;
 }
 
 .list-items li::before {  
@@ -36,10 +38,6 @@ body {
 
 .list-items li.active::before {
     width:100%
-}
-
-.bi-snow3 {
-    font-size: 24px;
 }
 
 .bi-cart {
@@ -76,6 +74,82 @@ body {
     font-size: 14px;
     background: red;
     color: white;
+}
+
+/* body section */
+.body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.ad-picture {
+    height: 468px;
+    width: 1280px;
+    background-image: url("/images/anniversary-banner1.png");
+    background-repeat:no-repeat;
+    background-position: center left 90%;
+    background-attachment:local; 
+    align-items: center;
+}
+
+.ad-picture p {
+    font-size:40px;
+    font-weight: 500px;
+    text-align:right;
+    color: aliceblue;
+    position: relative;
+    top: 30%;
+    left: 46%;
+    transform: translate(-50%, -50%);
+}
+
+.ad-picture a {
+    line-height: 2;
+    background-color: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.40);
+    border-radius: 30px;
+    position: absolute;
+    top: 40%;
+    left: 72%;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    font-weight: 400px;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    color: #f3f3f3;
+    font-weight: 500;
+}
+
+.ad-picture a:hover {
+    background-color: rgba(255,255,255,0.50);
+}
+
+.arrival-icon {
+    width: 40px;
+    padding-top: 10px;
+}
+
+.discountItems-icon {
+    width: 40px;
+    padding-top: 10px;
+}
+
+.container {
+    padding-top: 30px;
+}
+
+.categories .card {
+    background-color: lightcyan;
+    border: none;
+}
+
+.categories img {
+    border-radius: 50%;
+}
+
+.category-icon {
+    width: 40px;
+    padding-top: 10px;
 }
 
 .footer {

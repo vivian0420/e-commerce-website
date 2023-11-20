@@ -4,10 +4,8 @@ const config = {
         host: "localhost",
         name: "ecommerce"
     },
-    db: {
-        host: "localhost",
-        port: 3306,
-        name: "mongoDB"
+    mongo: {
+        connectionString: 'mongodb+srv://jzhang230:jiayunzhang@whoopee.pczv4de.mongodb.net/Whoopee?retryWrites=true&w=majority'
     }
 }
 

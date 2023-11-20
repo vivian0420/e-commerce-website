@@ -1,1 +1,80 @@
-<h1>This is a test!</h1>
+ 
+<div class="body">
+  <!--ad picture section-->
+  <div class="ad-picture position-relative">
+    <p>Celebrate your big day with us!</p>
+    <a href="#new-arrivals">Learn more</a>
+  </div>
+  <!--new arrivals section-->
+ 
+  <div class="new-arrivals" id="new-arrivals">
+    <div class="title text-center pt-5">
+      <img
+        class="arrival-icon"
+        src="/images/new-arrival-icon.png" 
+        alt="arrival-icon"
+      />
+      <h1>New Arrivals</h1>
+    </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5 border-3">
+        {{#each arrivals}}
+          <div class="col">
+            <div class="card h-80">
+              <img src={{path}} alt={{name}} />
+            </div>
+          </div>
+       {{/each}}
+      </div>
+    </div>
+  </div>
+  <!--discount section-->
+  <div class="discount-items">
+    <div class="title text-center pt-5">
+      <img
+        class="discountItems-icon"
+        src="/images/discount-icon.png"
+        alt="DiscountItems-icon"
+      />
+      <h1>New for Sale</h1>
+    </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5 border-3">
+        {{#each sales}}
+          <div class="col">
+            <div class="card h-80">
+              <img src={{path}} alt={{name}} />
+            </div>
+          </div>
+       {{/each}}
+      </div>
+    </div>
+  </div>
+  <!-- category section-->
+  <div class="categories">
+    <div class="title text-center pt-5">
+      <img
+        class="category-icon"
+        src="/images/category-icon.png"
+        alt="category-icon"
+      />
+      <h1>Shop by Category</h1>
+    </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5 border-3">
+        {{#each categories}}
+          <div class="col">
+            <div class="card h-80">
+              <img src={{path}} alt={{name}} />
+              <div class="card-body">
+                <h5 class="card-title text-center">{{name}}</h5>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+      </div>
+    </div>
+  </div>
+  
+</div>
+ 
