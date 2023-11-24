@@ -1,57 +1,64 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Whoopee</title>
-  
+
     <link rel="stylesheet" href="/styles/main_layout.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
-      crossorigin="anonymous"/>
+      crossorigin="anonymous"
+    />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"/>
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
     <script src="/scripts/main_layout.js"></script>
-  
-</head>
-<body>
+
+  </head>
+  <body>
     <div class="shipping-info text-center bg-dark text-white">
       <span class="fw-bolder">Free Shipping or Same Day Delivery on $59+ </span>
       <span class="fw-light">No code needed.</span>
     </div>
-    <div class="navbar navbar-expand-lg p-3 d-flex justify-content-sm-around shadow-sm container-fluid">
-      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="nav-logo col-md-3 d-flex align-items-center gap-2">
-        <img class="logo w-25" src="/images/website-logo3.png" alt="website-logo"/>
-        <a href="#" class="navbar-brand website-name fs-1 fw-bold pt-5">Whoopee</a>
+    <div class="shadow">
+      <div class="align-items-end gap-2 d-flex justify-content-center">
+            <img class="logo" src="/images/website-logo3.png" alt="website-logo"/>
+            <a href="#" class="navbar-brand website-name fs-1 fw-bold pt-5">Whoopee</a>
       </div>
-      <div class="collapse navbar-collapse nav-menu col-md-7" id="navbarCollapse">
-        <div class="navbar-nav list-items d-flex justify-content-end gap-5 fw-bold list-unstyled">
-          <li><a href="/">Home</a></li>
-          <li><a href="/birthday">Birthday</a></li>
-          <li><a href="/christmas">Christmas</a></li>
-          <li><a href="/thanksgiving">Thanksgiving</a></li>
-          <li><a href="/halloween">Halloween</a></li>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse nav-menu" id="navbarCollapse">
+            <ul class="navbar-nav list-items mb-lg-0 list-unstyled gap-lg-5">
+              <li class="nav-item"><a class="nav-link text-dark home" href="/">Home</a></li>
+              <li class="nav-item"><a class="nav-link text-dark birthday" href="/birthday">Birthday</a></li>
+              <li class="nav-item"><a class="nav-link text-dark christmas" href="/christmas">Christmas</a></li>
+              <li class="nav-item"><a class="nav-link text-dark halloween" href="/halloween">Halloween</a></li>
+              <li class="nav-item"><a class="nav-link text-dark sales" href="/sales">Sales</a></li>
+           </ul>
+          </div>
+          <div class="nav-login-cart col-md-2 d-flex align-items-center justify-content-end gap-3 pe-5 pt-5">
+            <a href="/login"><i class="bi bi-person-fill"></i></a>
+            <a href="/cart"><i class="bi bi-cart"></i></a>
+          <div class="nav-cart-count">0</div>
         </div>
-      </div>
-      <div class="nav-login-cart col-md-2 d-flex align-items-center justify-content-end gap-3 pe-5 pt-5">
-        <button class="button"><a href="/login">Login</a></button>
-        <a href="/cart"><i class="bi bi-cart"></i></a>
-        <div class="nav-cart-count">0</div>
-      </div>
+        </div>
+      </nav>
     </div>
     {{{body}}}
     <div class="footer text-center fs-3 shadow" id="footer">
     </div>
-</body>
+  </body>
 </html>

@@ -1,0 +1,26 @@
+
+  <div class="container">
+    <div id="active-control" class="d-none {{activePage}}"></div>
+    <div class="container d-flex justify-content-center h-50">
+        <img class="col-sm-12" src="https://as1.ftcdn.net/v2/jpg/05/45/85/36/1000_F_545853625_9FPjxn2NOpzLiN1hOVp76wDlMBX7x3rc.jpg"
+        alt="christmas-banner"/>
+    </div>
+    <hr/>
+    <br>
+    <h5>{{christmasItems.length}} products</h5>
+    <br/>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
+      {{#each christmasItems}}
+        <div class="col">
+          <div class="card border-0 h-100">
+            <img src={{path}} alt={{name}} />
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title text-center">{{name}}</h6>
+              <p class="card-text text-center mt-auto">${{price}}</p>
+              <a href="#" class="btn btn-primary mt-auto">Add to cart</a>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
