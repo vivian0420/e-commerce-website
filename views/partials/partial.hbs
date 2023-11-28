@@ -1,6 +1,6 @@
 <hr />
 <br />
-<h5>{{items.length}} products</h5>
+<h5>{{h5Title}}</h5>
 <br />
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
   {{#each items}}
@@ -10,7 +10,10 @@
         <div class="card-body d-flex flex-column">
           <h6 class="card-title text-center">{{name}}</h6>
           <p class="card-text text-center mt-auto">${{price}}</p>
-          <a href="#" class="btn btn-primary mt-auto">Add to cart</a>
+          <a
+            href="/product?id={{id}}"
+            class="btn btn-primary mt-auto stretched-link"
+          >Add to cart</a>
         </div>
       </div>
     </div>

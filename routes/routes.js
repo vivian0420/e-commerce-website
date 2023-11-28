@@ -1,4 +1,8 @@
 const modelProduct = require("../modules/ProductSchema");
+function getRandomNumber() {
+  return Math.random() - 0.5;
+}
+
 module.exports = function (app) {
   app.get("/", async (req, res) => {
     try {
@@ -15,6 +19,7 @@ module.exports = function (app) {
         .sort({ id: 1 })
         .lean();
       const activePage = "homeActive";
+
       res.render("home_page_view", { arrivals, sales, categories, activePage });
     } catch (error) {
       console.error("Error occurred:", error);
@@ -28,7 +33,8 @@ module.exports = function (app) {
         .sort({ id: 1 })
         .lean();
       const activePage = "birthdayActive";
-      res.render("birthday_page_view", { birthdayItems, activePage });
+      const h5Title = birthdayItems.length + " products";
+      res.render("birthday_page_view", { birthdayItems, activePage, h5Title });
     } catch (error) {
       console.error("Error occurred:", error);
     }
@@ -41,7 +47,12 @@ module.exports = function (app) {
         .sort({ id: 1 })
         .lean();
       const activePage = "christmasActive";
-      res.render("christmas_page_view", { christmasItems, activePage });
+      const h5Title = christmasItems.length + " products";
+      res.render("christmas_page_view", {
+        christmasItems,
+        activePage,
+        h5Title,
+      });
     } catch (error) {
       console.error("Error occurred:", error);
     }
@@ -54,7 +65,12 @@ module.exports = function (app) {
         .sort({ id: 1 })
         .lean();
       const activePage = "halloweenActive";
-      res.render("halloween_page_view", { halloweenItems, activePage });
+      const h5Title = halloweenItems.length + " products";
+      res.render("halloween_page_view", {
+        halloweenItems,
+        activePage,
+        h5Title,
+      });
     } catch (error) {
       console.error("Error occurred:", error);
     }
@@ -67,7 +83,28 @@ module.exports = function (app) {
         .sort({ id: 1 })
         .lean();
       const activePage = "salesActive";
-      res.render("sales_page_view", { salesItems, activePage });
+      const h5Title = salesItems.length + " products";
+      res.render("sales_page_view", { salesItems, activePage, h5Title });
+    } catch (error) {
+      console.error("Error occurred:", error);
+    }
+  });
+
+  app.get("/product", async (req, res) => {
+    try {
+      const item = await modelProduct
+        .findOne(
+          { id: req.query.id },
+          "id name path price newPrice quantity details category"
+        )
+        .lean();
+      const recomItems = await modelProduct
+        .find({ category: item.category }, "id name price newPrice path")
+        .lean();
+      const shuffledItems = recomItems.sort(getRandomNumber);
+      const randomResults = shuffledItems.slice(0, 4);
+      const h5Title = "You May Also Like";
+      res.render("product_page_view", { item, randomResults, h5Title });
     } catch (error) {
       console.error("Error occurred:", error);
     }
