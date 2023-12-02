@@ -25,40 +25,102 @@
 
   </head>
   <body>
+    <div class="main">
     <div class="shipping-info text-center bg-dark text-white">
       <span class="fw-bolder">Free Shipping or Same Day Delivery on $59+ </span>
       <span class="fw-light">No code needed.</span>
     </div>
-    <div class="shadow">
+    <div class="header shadow">
       <div class="align-items-end gap-2 d-flex justify-content-center">
-            <img class="logo" src="/images/website-logo3.png" alt="website-logo"/>
-            <a href="#" class="navbar-brand website-name fs-1 fw-bold pt-5">Whoopee</a>
+        <img class="logo" src="/images/website-logo3.png" alt="website-logo" />
+        <a
+          href="#"
+          class="navbar-brand website-name fs-1 fw-bold pt-5"
+        >Whoopee</a>
       </div>
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-          
-          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+
+          <button
+            type="button"
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse nav-menu" id="navbarCollapse">
             <ul class="navbar-nav list-items mb-lg-0 list-unstyled gap-lg-5">
-              <li class="nav-item"><a class="nav-link text-dark home" href="/">Home</a></li>
-              <li class="nav-item"><a class="nav-link text-dark birthday" href="/birthday">Birthday</a></li>
-              <li class="nav-item"><a class="nav-link text-dark christmas" href="/christmas">Christmas</a></li>
-              <li class="nav-item"><a class="nav-link text-dark halloween" href="/halloween">Halloween</a></li>
-              <li class="nav-item"><a class="nav-link text-dark sales" href="/sales">Sales</a></li>
-           </ul>
+              <li class="nav-item"><a
+                  class="nav-link text-dark home"
+                  href="/"
+                >Home</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-dark birthday"
+                  href="/birthday"
+                >Birthday</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-dark christmas"
+                  href="/christmas"
+                >Christmas</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-dark halloween"
+                  href="/halloween"
+                >Halloween</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-dark sales"
+                  href="/sales"
+                >Sales</a></li>
+            </ul>
           </div>
           <div class="nav-login-cart col-md-2 d-flex align-items-center justify-content-end gap-3 pe-5 pt-5">
-            <a href="/login"><i class="bi bi-person-fill"></i></a>
+            <div class="nav-account"><a href="/account"><i class="bi bi-person-fill"></i></a><span class="welcome-msg fs-6">welcome</span></div>
+            <div class="nav-login"><a href="javascript:;"><i class="bi bi-person-fill login"></i></a><span class="welcome-msg fs-6">sign in</span></div>
             <a href="/cart"><i class="bi bi-cart"></i></a>
-          <div class="nav-cart-count">0</div>
-        </div>
+            <div class="nav-cart-count">0</div>
+          </div>
         </div>
       </nav>
     </div>
     {{{body}}}
-    <div class="footer text-center fs-3 shadow" id="footer">
+    <div class="footer text-center fs-3 shadow" id="footer"></div>
+    </div>
+    <div class="login-register-box">
+      <div class="login-box">
+        <div class="logo_pic"><img class="logo" src="/images/website-logo3.png" alt="website-logo" /><i class="bi bi-x-circle close_button"></i></div>
+        <div class="title mt-3 fs-3 fw-medium">SIGN   IN </div><br/>
+        <div class="content">
+          <form method="post" action="/account" class="text-center">
+            <label for="email">Email Address:</label><br />
+            <input type="email" name="email" id="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required/><br />
+            <label for="password">Password:</label><br/>
+            <input type="password" class="login_password" name="password" minlength="8" /><br/><br/>
+            <input type="text" name="type" value="login" class="d-none" />
+            <input type="text" name="page" class="current-page d-none" value="" />
+            <input type="submit" value="Sign in" /><br/>
+            <hr/>
+            <p>New to Whoopee? <a class="text-decoration-underline register">CREATE AN ACCOUNT</a></p>
+          </form>
+        </div>
+      </div>
+      <div class="register-box">
+        <div class="logo_pic"><img class="logo justify-content-center " src="/images/website-logo3.png" alt="website-logo" /> <i class="bi bi-x-circle close_button"></i></div>
+        <div class="title mt-3 fw-medium"><p>CREATE AN ACCOUNT TO ACCESS EXCLUSIVES AND MORE</p></div>
+        <form method="post" action="/account"  class="text-center">
+          <input type="email" id="email" name="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" placeholder="Email Address" required /><br/><br/>
+          <input type="text" name="firstName" placeholder="First Name"/>
+          <input type="text" name="lastName" placeholder="Last Name" /><br/><br/>
+          <input type="password" class="register_password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password" required/>
+          <input type="password" id="confirm_password" placeholder="Confirm Password" required/><br/></br>
+          <span class="password-hint">Hint: password must contain at least one  number,one uppercase and one lowercase letter. At least 8 or more characters</span><br/>
+          <input type="text" name="type" value="register" class="d-none" />
+          <input type="text" name="page" class="current-page d-none" value=""/>
+          <input type="submit" value="Create" class="submit"/><br/>
+          <hr/>
+          <p>Already have an account? <a class="text-decoration-underline login">Sign in</a></p>
+        </form>
+      </div>
+    </div>
     </div>
   </body>
 </html>

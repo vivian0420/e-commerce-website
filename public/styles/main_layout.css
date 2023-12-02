@@ -199,6 +199,7 @@ body {
     background-color:lightskyblue;
 }
 
+/*remove arrow in input(type: number) textfile */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -213,3 +214,131 @@ input::-webkit-inner-spin-button {
 .alert {
     display:none;
 }
+
+/* login, register section */
+.login-box {
+    width: 500px;
+    height: 420px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: rgb(190, 247, 247);
+    display: none;
+}
+
+.register-box {
+    width: 500px;
+    height: 460px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: rgb(190, 247, 247);
+    display: none;
+}
+
+.title {
+    text-align: center;
+}
+
+.logo_pic {
+    position: relative;
+    left: 45%;
+    top: 10px
+}
+
+.bi-x-circle {
+    cursor: pointer;
+    display: block;
+    position: fixed;
+    right: 10px;
+    top: 8px;
+    z-index: 9999;
+    font-size: 20px;
+}
+
+.login-register-box a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.blur {
+    filter: blur(2px);
+}
+
+.password-hint {
+    font-size: small;
+    text-align: center;
+    padding-left: 25px;
+    padding-right: 20px;
+}
+
+.account-list, 
+.register-info {
+    height: 480px;
+    padding-top: 100px;
+}
+
+.register-info a {
+    cursor: pointer;
+}
+
+.nav-account {
+    display: none;
+}
+
+.account-list-item {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-left: -30px;
+}
+.account-list-item li {
+    margin-left: 30px;
+}
+
+.account-list-item li a {
+    cursor: pointer;
+}
+
+.logout-confirm-message {
+    display: none;
+    position: absolute;
+    width: 600px;
+    height: 250px;
+    top: 68%;
+    left: 50%;
+    z-index: 9999;
+    background-color: rgb(190, 247, 247);
+    transform: translate(-50%, -50%);
+    
+}
+
+.logout-confirm-message p{
+    position: relative;
+    top:40%;
+}
+
+.logout-confirm-message a{
+    position: relative;
+    top:45%;
+}
+
+.cancel-logout, 
+.confirm-logout {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid gray;
+    width: 80px;
+    border-radius: 20px;
+    cursor: pointer;  
+}
+
+.confirm-logout:hover {
+    color: rgb(240, 10, 10);
+}
+

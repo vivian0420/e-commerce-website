@@ -8,6 +8,16 @@ const hbs = require("express-handlebars");
 const config = require("./modules/config");
 
 const connectDB = require("./modules/db");
+// const modelUser = require("./modules/UserSchema");
+
+// modelUser.create({
+//     firstname: "Jiayun",
+//     lastname: "Zhang",
+//     email: "wszjy0420@gmail.com",
+//     password: "Aa112233",
+// }).then(function(){
+//     console.log("create user.");
+// })
 
 // modelProduct.updateMany({homePic: true}, {newArrival: true}, {new: true})
 //     .then (function(){

@@ -2,10 +2,10 @@
   <div id="active-control" class="d-none {{activePage}}"></div>
   <!--ad picture section-->
   <div class="container">
-  <div class="ad-picture position-relative col-sm-12">
-    <p>Celebrate your big day with us!</p>
-    <a href="#new-arrivals">Learn more</a>
-  </div>
+    <div class="ad-picture position-relative col-sm-12">
+      <p>Celebrate your big day with us!</p>
+      <a href="#new-arrivals">Learn more</a>
+    </div>
   </div>
   <!--new arrivals section-->
 
@@ -42,7 +42,7 @@
     </div>
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5 border-3">
-        {{#each sales }}
+        {{#each sales}}
           <div class="col">
             <div class="card h-80">
               <img src={{path}} alt={{name}} />
@@ -77,5 +77,6 @@
       </div>
     </div>
   </div>
-
+  <!--for get current route -->
+  <input type="text" class="get-route get-status d-none" value={{page}} id={{status}} />
 </div>
