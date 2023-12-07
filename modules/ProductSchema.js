@@ -1,12 +1,6 @@
 //const { text } = require("express");
 const mongoose = require("mongoose");
 let schemaProduct = mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-    index: true,
-  },
   name: {
     type: String,
     required: true,

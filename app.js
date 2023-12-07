@@ -1,13 +1,13 @@
 const express = require("express");
-const app = express();
-
-const root = "/public";
-app.use(express.static(__dirname + root));
-
 const hbs = require("express-handlebars");
 const config = require("./modules/config");
-
 const connectDB = require("./modules/db");
+const root = "/public";
+
+const app = express();
+app.use(express.static(__dirname + root));
+
+
 // const modelUser = require("./modules/UserSchema");
 
 // modelUser.create({
@@ -19,10 +19,8 @@ const connectDB = require("./modules/db");
 //     console.log("create user.");
 // })
 
-// modelProduct.updateMany({homePic: true}, {newArrival: true}, {new: true})
-//     .then (function(){
-//         connectDB(false);
-//     })
+
+    
 // const dataProduct = modelProduct.create({
 //     id: 25,
 //     name: "Halloween retro iron lamp",
@@ -125,6 +123,9 @@ app.set("view engine", "hbs");
 app.engine(
   "hbs",
   hbs.engine({
+    helpers: {ifEquals: function(arg1, arg2, options) {
+        return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+      }},
     layoutsDir: __dirname + "/views/layouts",
     partialsDir: __dirname + "/views/partials",
     defaultLayout: "main_layout",

@@ -31,6 +31,12 @@ let schemaUser = mongoose.Schema({
         type: Array,
         require: true,
         default:[],
+    },
+    sizeOfCart: {
+        type: Number,
+        require: true,
+        default:0,
     }
+
 })
 module.exports = mongoose.model("User", schemaUser);

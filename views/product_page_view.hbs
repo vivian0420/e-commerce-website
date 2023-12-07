@@ -8,7 +8,8 @@
       <img src={{item.path}} alt={{item.name}} />
     </div>
     <div class="product-info col-6">
-      <div class="product-price"><h3>${{item.price}}</h3></div>
+      <div class="product-price"><span class="fs-3 {{#ifEquals item.price item.newPrice}}original-price{{else}}text-decoration-line-through{{/ifEquals}}">${{item.price}}</span>&nbsp;
+      <span class="fs-3 {{#ifEquals item.price item.newPrice}}d-none{{else}}text-danger{{/ifEquals}}">${{item.newPrice}}</span></div>
       <div class="produce-intro"><p>{{item.details}}</p></div>
       <div class="product-quantity pt-3" >
         <h6>Quantity:</h6>
@@ -27,12 +28,6 @@
         </div>
       </div>
       <br />
-      <div class="product-color">
-        <h6>Color:</h6>
-        <input type="color" value="#e66465" />
-        <input type="color" value="#f6b73c" />
-        <input type="color" value="#f5a73c" />
-      </div>
       <div class="addToCart pt-5">
         <a  class="rounded-pill border-2">Add to Cart</a>
       </div>
@@ -42,4 +37,5 @@
   {{> partial items = randomResults}}
   <!--for get current route -->
   <input type="text" class="get-route get-status d-none" value={{page}} id={{status}} />
+  <input type="text" class="d-none get-app-name" value={{appName}} />
 </div>

@@ -1,4 +1,6 @@
 $(function () {
+  $("head title").text($(".get-app-name").val());
+  $(".website-name").text($(".get-app-name").val());
   $("#footer").html("Today is: " + new Date().toLocaleDateString());
 
   //active page management
@@ -19,15 +21,17 @@ $(function () {
     $(".sales").addClass("active");
   }
 
+  // Tracking the current page for redirection after user login
   let currentPage = $(".get-route").val();
   if (currentPage != "") {
     $(".current-page").val(currentPage);
   }
 
+  //Implementing user account functionality based on user status:
+  //If a user is logged in, clicking the account button will navigate to the user's account page
+  //Otherwise, it will display a login popup.
   let status = $(".get-status").attr("id");
-  console.log("status: " + status);
   if (status === "login") {
-    console.log("inside");
     $(".nav-login").css("display", "none");
     $(".nav-account").css("display", "block");
   }
@@ -70,7 +74,6 @@ function inc_quantity() {
 }
 function add_cart() {
   const maxLimit = parseInt($(".quantity-input").attr("max"));
-
   if (parseInt($(".quantity-input").val()) > maxLimit) {
     $(".alert").show(3000);
     setTimeout(function () {
@@ -78,13 +81,14 @@ function add_cart() {
     }, 3000);
     $(".quantity-input").val(0);
   } else {
-    $(".nav-cart-count").text(function () {
-      const currentCount = parseInt($(".nav-cart-count").text());
-      const inputValue = parseInt($(".quantity-input").val());
-      const cartValue = currentCount + inputValue;
-      $(".quantity-input").val(0);
-      return cartValue;
-    });
+    
+    // $(".nav-cart-count").text(function () {
+    //   const currentCount = parseInt($(".nav-cart-count").text());
+    //   const inputValue = parseInt($(".quantity-input").val());
+    //   const cartValue = currentCount + inputValue;
+    //   $(".quantity-input").val(0);
+    //   return cartValue;
+    // });
   }
 }
 
@@ -134,9 +138,9 @@ function validate_password() {
 }
 
 function alert_logout() {
-    $(".logout-confirm-message").css("display", "block");
+  $(".logout-confirm-message").css("display", "block");
 }
 
 function cancel_logout() {
-    $(".logout-confirm-message").css("display", "none");
+  $(".logout-confirm-message").css("display", "none");
 }
