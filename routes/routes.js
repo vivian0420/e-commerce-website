@@ -38,9 +38,12 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("home_page_view", { arrivals, sales, categories, activePage, page, status, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("home_page_view", { arrivals, sales, categories, activePage, page, status, appName, cartItemAmount});
       } else {
-        res.render("home_page_view", { arrivals, sales, categories, activePage, page, appName });
+        const cartItemAmount = 0;
+        res.render("home_page_view", { arrivals, sales, categories, activePage, page, appName, cartItemAmount });
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -59,9 +62,12 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("birthday_page_view", { birthdayItems, activePage, h5Title, page, status, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("birthday_page_view", { birthdayItems, activePage, h5Title, page, status, appName, cartItemAmount});
       } else {
-        res.render("birthday_page_view", { birthdayItems, activePage, h5Title, page, appName });
+        const cartItemAmount = 0;
+        res.render("birthday_page_view", { birthdayItems, activePage, h5Title, page, appName, cartItemAmount });
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -81,9 +87,12 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("christmas_page_view", {christmasItems, activePage, h5Title, page, status, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("christmas_page_view", {christmasItems, activePage, h5Title, page, status, appName, cartItemAmount});
       } else {
-        res.render("christmas_page_view", {christmasItems, activePage, h5Title, page, appName });
+        const cartItemAmount = 0;
+        res.render("christmas_page_view", {christmasItems, activePage, h5Title, page, appName, cartItemAmount });
       } 
     } catch (error) {
       console.error("Error occurred:", error);
@@ -103,9 +112,12 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("halloween_page_view", {halloweenItems, activePage, h5Title, page, status, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("halloween_page_view", {halloweenItems, activePage, h5Title, page, status, appName, cartItemAmount});
       } else {
-        res.render("halloween_page_view", {halloweenItems, activePage, h5Title, page, appName});
+        const cartItemAmount = 0;
+        res.render("halloween_page_view", {halloweenItems, activePage, h5Title, page, appName, cartItemAmount});
       }
       
     } catch (error) {
@@ -126,10 +138,13 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("sales_page_view", { salesItems, activePage, h5Title, status, page, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("sales_page_view", { salesItems, activePage, h5Title, status, page, appName, cartItemAmount});
       } else {
         const status = "";
-        res.render("sales_page_view", { salesItems, activePage, h5Title, status, page, appName});
+        const cartItemAmount = 0;
+        res.render("sales_page_view", { salesItems, activePage, h5Title, status, page, appName, cartItemAmount});
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -155,9 +170,12 @@ module.exports = function (app) {
       userSession = req.session;
       if (userSession.user) {
         const status = "login";
-        res.render("product_page_view", { item, randomResults, h5Title, page, status, appName});
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("product_page_view", { item, randomResults, h5Title, page, status, appName, cartItemAmount});
       } else {
-        res.render("product_page_view", { item, randomResults, h5Title, page, appName });
+        const cartItemAmount = 0;
+        res.render("product_page_view", { item, randomResults, h5Title, page, appName, cartItemAmount });
       }
       
     } catch (error) {
@@ -165,22 +183,58 @@ module.exports = function (app) {
     }
   });
 
-  app.get("/account", (req, res) => {
+  app.post("/add_cart", async(req, res)=> {
+    userSession = req.session;
+    if (userSession.user) {
+        const _id = req.body._id;
+        const quantity = parseInt(req.body.quantity);
+        const userEmail = userSession.user.split(" ")[0];
+        const cart = await modelUser.findOne({email: userEmail}, {sizeOfCart: 1});
+        let sizeofcart = cart['sizeOfCart'] + quantity;
+        const targetAccount = await modelUser.findOne({email: userEmail});
+        const targetCart = targetAccount.cart;
+        let itemQuantity;
+        targetCart.forEach(cartItem => {
+            if(cartItem._id === _id) {
+                itemQuantity = cartItem.quantity;
+            }
+        })
+
+        if(itemQuantity) {
+            const itemQuantityUpdated = itemQuantity + quantity;
+            await modelUser.findOneAndUpdate({email: userEmail, 'cart._id': _id}, {$set: {'cart.$.quantity': itemQuantityUpdated, sizeOfCart: sizeofcart}}, {new: true});
+        } else {
+            await modelUser.findOneAndUpdate({email: userEmail}, {$push: {cart: {_id, quantity}}, $set: {sizeOfCart: sizeofcart}}, {new: true});
+        }
+        res.json({ status: 200, sizeOfCart: sizeofcart});
+    } else {
+        res.json({ status: 500});
+    }
+  })
+
+  app.get("/cart", (req, res) => {
+    
+  })
+
+  app.get("/account", async(req, res) => {
     userSession = req.session;
     const page = "/account";
+    
     if (userSession.user) {
         const status = "login";
         const info = "<div class='account-list'><ul class='account-list-item'>" + 
                      "<li><a>Settings(TBD)</a></li>" + 
                      "<li><a>Order history(TBD)</a></li>" + 
                      "<li><a class='logout'>Sign out</a></li></ul></div>";
-        
-        res.render("account_page_view", { info, status, page, appName });
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        res.render("account_page_view", { info, status, page, appName, cartItemAmount });
     } else {
         const info = "<div class='register-info'><h3>You are not logged in. Please log in or register an account.</h3>" +
                      "<a class='login'>Login</a> <a class='register'>Register</a></div>"
         const status = "";
-        res.render("account_page_view", { info, status, page, appName });            
+        const cartItemAmount = 0;
+        res.render("account_page_view", { info, status, page, appName, cartItemAmount });            
     }
     
   })

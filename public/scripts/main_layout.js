@@ -2,7 +2,8 @@ $(function () {
   $("head title").text($(".get-app-name").val());
   $(".website-name").text($(".get-app-name").val());
   $("#footer").html("Today is: " + new Date().toLocaleDateString());
-
+  $(".nav-cart-count").text($(".get-cartitem-amount").val());
+  
   //active page management
   if ($("#active-control").hasClass("homeActive")) {
     $(".active").removeClass("active");
@@ -80,15 +81,40 @@ function add_cart() {
       $(".alert").hide();
     }, 3000);
     $(".quantity-input").val(0);
+  } else if (parseInt($(".quantity-input").val()) === 0) {
+        $(".alert").text("Please enter a number!")
+        $(".alert").show(3000);
+        setTimeout(function () {
+          $(".alert").hide();
+        }, 3000);
   } else {
-    
-    // $(".nav-cart-count").text(function () {
-    //   const currentCount = parseInt($(".nav-cart-count").text());
-    //   const inputValue = parseInt($(".quantity-input").val());
-    //   const cartValue = currentCount + inputValue;
-    //   $(".quantity-input").val(0);
-    //   return cartValue;
-    // });
+    const id = $(".get-item-id").val();
+    const quantity = $(".quantity-input").val();
+    let xhr = new XMLHttpRequest();  //create a new XMLHttpRequest object
+    xhr.open('POST', '/add_cart');   
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    const data = "_id=" + encodeURIComponent(id) + "&quantity=" + encodeURIComponent(quantity);
+    xhr.send(data);
+
+    xhr.addEventListener("load", function(){
+        if ($(".get-status").attr("id") == "login" && xhr.status == 200) {
+            $(".alert").text("Item(s) added to cart successfully!");
+            $(".alert").show(3000);
+            setTimeout(function () {
+                $(".alert").hide();
+            }, 3000);
+            let res = JSON.parse(xhr.response);  
+            const sizeofcart = res.sizeOfCart;
+            $(".nav-cart-count").text(sizeofcart);
+            $(".quantity-input").val(0);
+        } else {
+            $(".alert").text("Please log in before proceeding!");
+            $(".alert").show(3000);
+            setTimeout(function () {
+                $(".alert").hide();
+            }, 3000);
+        }
+    })
   }
 }
 
@@ -117,7 +143,6 @@ function click_blank() {
 
 function validate_password() {
   let pass = $(".register_password").val();
-  console.log("pass:" + pass);
 
   let re_pass = $("#confirm_password").val();
   console.log("re_pass:" + re_pass);

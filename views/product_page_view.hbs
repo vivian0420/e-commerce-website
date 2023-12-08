@@ -2,6 +2,7 @@
 <div class="container">
   <div class="product-name ps-5">
     <h1>{{item.name}}</h1>
+    <input type="text" class="d-none get-item-id" value={{item._id}} />
   </div>
   <div class="product-details row mt-5 d-flex align-items-start">
     <div class="product-photo col-6">
@@ -38,4 +39,5 @@
   <!--for get current route -->
   <input type="text" class="get-route get-status d-none" value={{page}} id={{status}} />
   <input type="text" class="d-none get-app-name" value={{appName}} />
+  <input type="text" class="d-none get-cartitem-amount" value={{cartItemAmount}} />
 </div>
