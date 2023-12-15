@@ -27,6 +27,11 @@ $(function () {
   if (currentPage != "") {
     $(".current-page").val(currentPage);
   }
+  if(currentPage == "/cart" && parseInt($("#subtotal").text().substring(1)) == 0) {
+    $(".login_prompt").html("You cart is empty!");
+    $(".login_prompt").css("display", "block");
+  }
+  
 
   //Implementing user account functionality based on user status:
   //If a user is logged in, clicking the account button will navigate to the user's account page
@@ -35,7 +40,24 @@ $(function () {
   if (status === "login") {
     $(".nav-login").css("display", "none");
     $(".nav-account").css("display", "block");
+  } else {
+    $(".login_prompt").css("display","block");
   }
+
+  if(status === "login" && currentPage == "/cart") {
+    const subtotal = parseFloat($("#subtotal").text().substring(1));
+    console.log("subtotal in get cart: " + subtotal);
+    if(subtotal > 59) {
+        $(".cart-shipping-fee").text("Free");
+        $(".cart-shipping-fee").css("color", "green");
+        $(".subtotal_include_shipping").text("$" + subtotal);
+    } else {
+        $(".cart-shipping-fee").text("$10.00");
+        $(".cart-shipping-fee").css("color", "black");
+        $(".subtotal_include_shipping").text("$" + (subtotal+10));
+    }
+  }
+
 
   //increase and decrease button functionality
   $(".bi-dash-circle").on("click", dec_quantity);
@@ -49,6 +71,9 @@ $(function () {
   $("#confirm_password").on("keyup", validate_password);
   $(".logout").on("click", alert_logout);
   $(".cancel-logout").on("click", cancel_logout);
+  $(".cartDeleteButton").on("click", delete_cartItem)
+  $(".cartEditButton").on("click", edit_cartItem)
+  $(".cart_quantity").on("keyup", update_amount);
 });
 
 function dec_quantity() {
@@ -64,6 +89,8 @@ function inc_quantity() {
   $(".quantity-input").val(function (i, oldval) {
     const maxLimit = $(".quantity-input").attr("max");
     if (++oldval > maxLimit) {
+      $(".alert").text("Quantity out of limit!")
+      $(".alert").css("color", "red");
       $(".alert").show(3000);
       setTimeout(function () {
         $(".alert").hide();
@@ -76,6 +103,8 @@ function inc_quantity() {
 function add_cart() {
   const maxLimit = parseInt($(".quantity-input").attr("max"));
   if (parseInt($(".quantity-input").val()) > maxLimit) {
+    $(".alert").text("Quantity out of limit!")
+    $(".alert").css("color", "red");
     $(".alert").show(3000);
     setTimeout(function () {
       $(".alert").hide();
@@ -83,6 +112,7 @@ function add_cart() {
     $(".quantity-input").val(0);
   } else if (parseInt($(".quantity-input").val()) === 0) {
         $(".alert").text("Please enter a number!")
+        $(".alert").css("color", "red");
         $(".alert").show(3000);
         setTimeout(function () {
           $(".alert").hide();
@@ -99,6 +129,7 @@ function add_cart() {
     xhr.addEventListener("load", function(){
         if ($(".get-status").attr("id") == "login" && xhr.status == 200) {
             $(".alert").text("Item(s) added to cart successfully!");
+            $(".alert").css("color", "green");
             $(".alert").show(3000);
             setTimeout(function () {
                 $(".alert").hide();
@@ -143,9 +174,7 @@ function click_blank() {
 
 function validate_password() {
   let pass = $(".register_password").val();
-
   let re_pass = $("#confirm_password").val();
-  console.log("re_pass:" + re_pass);
   if (pass !== re_pass) {
     $(".password-hint").html("❌ Password not match!");
     $(".password-hint").css("font-color", "red");
@@ -168,4 +197,103 @@ function alert_logout() {
 
 function cancel_logout() {
   $(".logout-confirm-message").css("display", "none");
+}
+
+function delete_cartItem() {
+    $(this).closest('.individualItem').remove();
+    let id = $(this).closest('.individualItem').find('.item-id').text();
+    let amount = parseInt($(this).closest('.individualItem').find('.cart_quantity').val());
+
+    let CartSize = parseInt($(".nav-cart-count").text());
+    let subtotal = parseFloat($("#subtotal").text().substring(1));
+    let xhr = new XMLHttpRequest(); 
+    xhr.open('POST', '/delete_cart_item');  
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    const data = "_id=" + encodeURIComponent(id) + "&amount=" + encodeURIComponent(amount) + "&cartSize=" + encodeURIComponent(CartSize);
+    xhr.send(data);
+
+    xhr.addEventListener("load", function(){
+        let res = JSON.parse(xhr.response); 
+        const deduction = res.deduction;
+        const currentCartSize = CartSize - amount;
+        if(currentCartSize === 0) {
+            $(".login_prompt").html("You cart is empty!");
+            $(".login_prompt").css("display", "block");
+        }
+        $(".nav-cart-count").text(currentCartSize);
+        let currentSubtotal = Math.round((subtotal- parseFloat(deduction)) * 100) /100;
+        $(".subtotal_exclude_shipping").text("$" + currentSubtotal);
+        if(currentSubtotal < 59) {
+            $(".cart-shipping-fee").text("$10.00");
+            $(".cart-shipping-fee").css("color", "black");
+            $(".subtotal_include_shipping").text("$" + (currentSubtotal+10));
+        } else {
+            $(".cart-shipping-fee").text("Free");
+            $(".cart-shipping-fee").css("color", "green");
+            $(".subtotal_include_shipping").text("$" + currentSubtotal);
+        }
+        
+
+    })
+}
+
+function edit_cartItem() {
+    let id = $(this).closest('.individualItem').find('.item-id').text();
+    const amount = parseInt($(this).closest('.individualItem').find('.cart_quantity').val());
+    if (amount === 0) {
+        $(this).closest('.individualItem').remove();
+    }
+    let CartSize = parseInt($(".nav-cart-count").text());
+    let subtotal = parseFloat($("#subtotal").text().substring(1));
+    let xhr = new XMLHttpRequest(); 
+    xhr.open('POST', '/edit_cart_item'); 
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    const data = "_id=" + encodeURIComponent(id) + "&amount=" + encodeURIComponent(amount) + "&cartSize=" + encodeURIComponent(CartSize);
+    xhr.send(data);
+
+    xhr.addEventListener("load", function() {
+        let res = JSON.parse(xhr.response); 
+        const deduction = res.deduction;
+        const diff = res.diff;
+        const currentCartSize = CartSize + diff;
+        if(currentCartSize === 0) {
+            $(".login_prompt").html("You cart is empty!");
+            $(".login_prompt").css("display", "block");
+        }
+        $(".nav-cart-count").text(currentCartSize);
+        let currentSubtotal = Math.round((subtotal + parseFloat(deduction)) * 100) /100;
+        $(".subtotal_exclude_shipping").text("$" + currentSubtotal);
+        if(currentSubtotal < 59) {
+            $(".cart-shipping-fee").text("$10.00");
+            $(".cart-shipping-fee").css("color", "black");
+            $(".subtotal_include_shipping").text("$" + (currentSubtotal+10));
+        } else {
+            $(".cart-shipping-fee").text("Free");
+            $(".cart-shipping-fee").css("color", "green");
+            $(".subtotal_include_shipping").text("$" + currentSubtotal);
+        }
+    })
+}
+
+function update_amount() {
+    const amount = parseInt($(this).closest('.individualItem').find('.cart_quantity').val());
+    const max = parseInt($(this).closest('.individualItem').find('.cart_quantity').attr("max"));
+    let self = this;
+    if(amount < 0) {
+        $(this).closest('.individualItem').find('.cart_quantity').val("0");
+        $(this).closest('.individualItem').find('.cart_quantity_alert').text("Quantity can't be less than 0!");
+        $(this).closest('.individualItem').find('.cart_quantity_alert').css("color", "red");
+        ($(this).closest('.individualItem').find('.cart_quantity_alert')).show(2000);
+        setTimeout(function () {
+            $(self).closest('.individualItem').find('.cart_quantity_alert').hide();
+        }, 2000);
+    } else if (amount > max) {
+        $(this).closest('.individualItem').find('.cart_quantity').val(max);
+        $(this).closest('.individualItem').find('.cart_quantity_alert').text("Quantity out of limit!");
+        $(this).closest('.individualItem').find('.cart_quantity_alert').css("color", "red");
+        $(this).closest('.individualItem').find('.cart_quantity_alert').show(2000);
+        setTimeout(function () {
+            $(self).closest('.individualItem').find('.cart_quantity_alert').hide();
+        }, 2000);
+    }
 }

@@ -212,8 +212,76 @@ module.exports = function (app) {
     }
   })
 
-  app.get("/cart", (req, res) => {
+  app.get("/cart", async(req, res) => {
+    userSession = req.session;
+    if (userSession.user) {
+        let cartItems = [];
+        let subtotal = 0;
+        const userEmail = userSession.user.split(" ")[0];
+        const targetAccount = await modelUser.findOne({email: userEmail});
+        const targetCart = targetAccount.cart;
+        processCartItem = async function(cartItem) {
+            const product = await modelProduct.findOne({_id: cartItem._id});
+            subtotal += (product.newPrice * cartItem.quantity);
+            const item = {product: product, quantity: cartItem.quantity};
+            cartItems.push(item);
+        }
+        for (const cartItem of targetCart) {
+            await processCartItem(cartItem);
+        }
+        const status = "login";
+        const page = '/cart';
+        const cart = await modelUser.findOne({email: userSession.user.split(" ")[0]}, {sizeOfCart: 1});
+        const cartItemAmount = cart['sizeOfCart'];
+        const jsonCartItems = JSON.parse(JSON.stringify(cartItems));
+        subtotal = Math.round(subtotal * 100) / 100;
+        res.render("cart_page_view", {jsonCartItems, status, page, appName, cartItemAmount, subtotal});
+       
+    } else {
+        const status = ""; 
+        const page = '/cart';
+        const cartItemAmount = 0;
+        res.render("cart_page_view", {status, page, appName, cartItemAmount});
+    }
+  })
+
+  app.post('/delete_cart_item', async(req, res) => {
+    userSession = req.session;
+    const userEmail = userSession.user.split(" ")[0];
+    const _id = req.body._id;
+    const amount = req.body.amount;
+    const cartSize = req.body.cartSize;
+    const product = await modelProduct.findOne({_id: _id});
     
+    const productPrice = product.newPrice;
+    const deduction = productPrice * (parseInt(amount));
+    await modelUser.updateOne({email: userEmail}, {$pull: {cart: {_id: _id}}, $set: {sizeOfCart: cartSize - amount}});
+    res.json({ status: 200, deduction: deduction});
+  })
+
+  app.post('/edit_cart_item', async(req, res) => {
+    userSession = req.session;
+    const userEmail = userSession.user.split(" ")[0];
+    const _id = req.body._id;
+    const amount = parseInt(req.body.amount);
+    const cartSize = parseInt(req.body.cartSize);
+    const product = await modelProduct.findOne({_id: _id});
+    const user = await modelUser.findOne({email: userEmail});
+    const cartItemIndex = user.cart.findIndex(item => item._id === _id);
+    const preQuantity = user.cart[cartItemIndex].quantity;
+    if(cartItemIndex !== -1) {
+        user.cart[cartItemIndex].quantity = amount;
+    }
+    const diff = amount - preQuantity;
+    const productPrice = product.newPrice;
+    const deduction = productPrice * diff;
+    
+    if(amount === 0) {
+        await modelUser.updateOne({email: userEmail}, {$pull: {cart: {_id: _id}}, $set: {sizeOfCart: cartSize + diff}});
+    } else {
+        await modelUser.updateOne({email: userEmail}, {$set: {cart: user.cart, sizeOfCart: cartSize + diff}});
+    }
+    res.json({ status: 200, deduction: deduction, diff: diff});
   })
 
   app.get("/account", async(req, res) => {
@@ -241,6 +309,7 @@ module.exports = function (app) {
 
   app.post("/account", async (req, res) => {
     const page = "/account";
+    const cartItemAmount = 0;
     if(req.body.type == 'register') {
         const firstname = req.body.firstName;
         const lastname = req.body.lastName;
@@ -259,11 +328,12 @@ module.exports = function (app) {
             })
             const info = "<div class='register-info text-center'><h3>Your registration has been completed successfully!</h3>" +
                           "<a class='login'>Login</a></div>"
-            res.render("account_page_view", { info, appName, page });
+
+            res.render("account_page_view", { info, appName, page, cartItemAmount });
         } else {
             const info = "<div class='register-info'><h3>This email address has already been registered!</h3>" +
                           "<a class='login'>Login</a>&nbsp&nbsp&nbsp<a class='register'>Register</a></div>"
-            res.render("account_page_view", { info, appName, page });
+            res.render("account_page_view", { info, appName, page, cartItemAmount });
         }
     } else if (req.body.type == 'login') {
         userSession = req.session;
@@ -273,7 +343,8 @@ module.exports = function (app) {
         if (user.length === 0) {
             const info = "<div class='register-info'><h3>Login failed. Please check that the email or password is correct and try again.</h3>" +
                           "<a class='login'>Login</a></div>"
-            res.render("account_page_view", { info, appName, page });
+            
+            res.render("account_page_view", { info, appName, page, cartItemAmount });
         } else {
             userSession.cookie.maxAge = 86400 * 1000;
             userSession.user = userEmail + " " + userPassword;

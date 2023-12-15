@@ -342,3 +342,46 @@ input::-webkit-inner-spin-button {
     color: rgb(240, 10, 10);
 }
 
+/*Cart Section */
+.cartItemImage {
+    width: 15vw;
+    height: auto;
+}
+
+.cart_quantity {
+    width: 3vw;
+    text-align: center;
+}
+
+.cart_checkout {
+    height: 50vw;
+}
+
+.cart_buttons a {
+    cursor: pointer;
+    text-decoration: underline !important;
+}
+
+.cart_buttons a:hover {
+    color: peru !important;
+}
+
+.cart_checkout_btn {
+    width: 90%;
+    color: #f3f3f3;
+    background-color: black;
+}
+
+#gift-wrap-img {
+    width: 22vw;
+}
+
+.login_prompt {
+    display: none;
+    text-align: center;
+    margin-top: 10vw !important;
+}
+
+.login_prompt a {
+    cursor: pointer;
+}
