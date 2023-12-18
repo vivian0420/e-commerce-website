@@ -5,9 +5,11 @@
                 alt="birthday-gif" />
     </div>
     {{> partial items = birthdayItems}}
-    <!--for get current route -->
+    <!--for get current route and user status(login or logout)-->
     <input type="text" class="get-route get-status d-none" value={{page}} id={{status}} />
+    <!--for get dynamic app name-->
     <input type="text" class="d-none get-app-name" value={{appName}} />
+    <!--for get the current amount of shooping cart-->
     <input type="text" class="d-none get-cartitem-amount" value={{cartItemAmount}} />
   </div>
 

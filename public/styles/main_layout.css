@@ -182,7 +182,7 @@ body {
     position: relative;
 }
 
-.addToCart a {
+#addToCart {
     border: 1px solid gray;
     line-height: 2;
     width: 120px;
@@ -342,7 +342,7 @@ input::-webkit-inner-spin-button {
     color: rgb(240, 10, 10);
 }
 
-/*Cart Section */
+/* Cart Section */
 .cartItemImage {
     width: 15vw;
     height: auto;

@@ -43,7 +43,8 @@ $(function () {
   } else {
     $(".login_prompt").css("display","block");
   }
-
+ 
+  // Shopping cart Shipping fee calculation function
   if(status === "login" && currentPage == "/cart") {
     const subtotal = parseFloat($("#subtotal").text().substring(1));
     console.log("subtotal in get cart: " + subtotal);
@@ -59,11 +60,14 @@ $(function () {
   }
 
 
-  //increase and decrease button functionality
+  // Product page "+" and "-" button functionality
   $(".bi-dash-circle").on("click", dec_quantity);
   $(".bi-plus-circle").on("click", inc_quantity);
 
-  $(".addToCart").on("click", add_cart);
+  // Product page "Add to cart" button click event
+  $("#addToCart").on("click", add_cart);
+
+  // Login, logout and register click events
   $(".login").on("click", login);
   $(".register").on("click", register);
   $(".close_button").on("click", close);
@@ -71,10 +75,13 @@ $(function () {
   $("#confirm_password").on("keyup", validate_password);
   $(".logout").on("click", alert_logout);
   $(".cancel-logout").on("click", cancel_logout);
+
+  // Shopping cart functionalities
   $(".cartDeleteButton").on("click", delete_cartItem)
   $(".cartEditButton").on("click", edit_cartItem)
   $(".cart_quantity").on("keyup", update_amount);
 });
+
 
 function dec_quantity() {
   $(".quantity-input").val(function (i, oldval) {
@@ -100,6 +107,11 @@ function inc_quantity() {
     return oldval;
   });
 }
+
+// Product page "Add to cart" button click event: set up alert based on the current quantity of 
+// corresponding product. If the input value is greater than the max limit or the user didn't enter
+// a number, display an alert for 3 seconds. Otherwise, send an XMLHttpRequest to the backend to add 
+// the item to the shopping cart.
 function add_cart() {
   const maxLimit = parseInt($(".quantity-input").attr("max"));
   if (parseInt($(".quantity-input").val()) > maxLimit) {
@@ -138,8 +150,17 @@ function add_cart() {
             const sizeofcart = res.sizeOfCart;
             $(".nav-cart-count").text(sizeofcart);
             $(".quantity-input").val(0);
-        } else {
+        }  else if (xhr.status == 400) {
+            $(".alert").text("Quantity out of limit!");
+            $(".alert").css("color", "red");
+            $(".alert").show(3000);
+            setTimeout(function () {
+                $(".alert").hide();
+            }, 3000);
+        }
+        else {
             $(".alert").text("Please log in before proceeding!");
+            $(".alert").css("color", "red");
             $(".alert").show(3000);
             setTimeout(function () {
                 $(".alert").hide();
@@ -148,6 +169,7 @@ function add_cart() {
     })
   }
 }
+
 
 function login() {
   $(".register-box").css("display", "none");
@@ -172,6 +194,7 @@ function click_blank() {
   $(".main").removeClass("blur");
 }
 
+// Validate password function for registration
 function validate_password() {
   let pass = $(".register_password").val();
   let re_pass = $("#confirm_password").val();
@@ -199,6 +222,10 @@ function cancel_logout() {
   $(".logout-confirm-message").css("display", "none");
 }
 
+// Shopping cart "Delete" button functionality: remove the item from the shopping cart, then send an 
+// XMLHttpRequest to the backend. If the shopping cart is empty after the item is removed, alert the 
+// user that the shopping cart is empty. Otherwise, modify the subtotal and shipping fee based on the 
+// current items in the shopping cart.
 function delete_cartItem() {
     $(this).closest('.individualItem').remove();
     let id = $(this).closest('.individualItem').find('.item-id').text();
@@ -221,12 +248,13 @@ function delete_cartItem() {
             $(".login_prompt").css("display", "block");
         }
         $(".nav-cart-count").text(currentCartSize);
-        let currentSubtotal = Math.round((subtotal- parseFloat(deduction)) * 100) /100;
+        let currentSubtotal = subtotal- parseFloat(deduction);
+        currentSubtotal = Math.round(currentSubtotal * 100) / 100;
         $(".subtotal_exclude_shipping").text("$" + currentSubtotal);
         if(currentSubtotal < 59) {
             $(".cart-shipping-fee").text("$10.00");
             $(".cart-shipping-fee").css("color", "black");
-            $(".subtotal_include_shipping").text("$" + (currentSubtotal+10));
+            $(".subtotal_include_shipping").text("$" + Math.round((currentSubtotal+10)*100) / 100);
         } else {
             $(".cart-shipping-fee").text("Free");
             $(".cart-shipping-fee").css("color", "green");
@@ -237,6 +265,10 @@ function delete_cartItem() {
     })
 }
 
+// Shopping cart "Edit" button functionality: If the amount of the item is 0 after edit, remove the 
+// item from the shopping cart. Send an XMLHttpRequest to the backend. If the shopping cart is empty 
+// after the item is removed, alert the user that the shopping cart is empty. Otherwise, modify the 
+// subtotal and shipping fee based on the current items in the shopping cart.
 function edit_cartItem() {
     let id = $(this).closest('.individualItem').find('.item-id').text();
     const amount = parseInt($(this).closest('.individualItem').find('.cart_quantity').val());
@@ -275,6 +307,9 @@ function edit_cartItem() {
     })
 }
 
+// Shopping cart update amount key-up event: If the input value is less than 0, alert "Quantity can't be 
+// less than 0!" If the input is greater than the qunatity of corresponding product, alert "Quantity
+// out of limit"
 function update_amount() {
     const amount = parseInt($(this).closest('.individualItem').find('.cart_quantity').val());
     const max = parseInt($(this).closest('.individualItem').find('.cart_quantity').attr("max"));
