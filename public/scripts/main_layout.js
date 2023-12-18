@@ -52,6 +52,10 @@ $(function () {
         $(".cart-shipping-fee").text("Free");
         $(".cart-shipping-fee").css("color", "green");
         $(".subtotal_include_shipping").text("$" + subtotal);
+    } else if (subtotal == 0 ) {
+        $(".cart-shipping-fee").text("$0");
+        $(".cart-shipping-fee").css("color", "black");
+        $(".subtotal_include_shipping").text("$" + subtotal);
     } else {
         $(".cart-shipping-fee").text("$10.00");
         $(".cart-shipping-fee").css("color", "black");
@@ -116,6 +120,14 @@ function add_cart() {
   const maxLimit = parseInt($(".quantity-input").attr("max"));
   if (parseInt($(".quantity-input").val()) > maxLimit) {
     $(".alert").text("Quantity out of limit!")
+    $(".alert").css("color", "red");
+    $(".alert").show(3000);
+    setTimeout(function () {
+      $(".alert").hide();
+    }, 3000);
+    $(".quantity-input").val(0);
+  } else if (parseInt($(".quantity-input").val()) < 0) {
+    $(".alert").text("Negative quantity is not allowed")
     $(".alert").css("color", "red");
     $(".alert").show(3000);
     setTimeout(function () {
@@ -251,7 +263,11 @@ function delete_cartItem() {
         let currentSubtotal = subtotal- parseFloat(deduction);
         currentSubtotal = Math.round(currentSubtotal * 100) / 100;
         $(".subtotal_exclude_shipping").text("$" + currentSubtotal);
-        if(currentSubtotal < 59) {
+        if (currentSubtotal == 0 ) {
+            $(".cart-shipping-fee").text("$0");
+            $(".cart-shipping-fee").css("color", "black");
+            $(".subtotal_include_shipping").text("$" + currentSubtotal);
+        } else if(currentSubtotal < 59 ) {
             $(".cart-shipping-fee").text("$10.00");
             $(".cart-shipping-fee").css("color", "black");
             $(".subtotal_include_shipping").text("$" + Math.round((currentSubtotal+10)*100) / 100);
@@ -293,12 +309,18 @@ function edit_cartItem() {
             $(".login_prompt").css("display", "block");
         }
         $(".nav-cart-count").text(currentCartSize);
-        let currentSubtotal = Math.round((subtotal + parseFloat(deduction)) * 100) /100;
+        let currentSubtotal = subtotal + parseFloat(deduction);
+        currentSubtotal = Math.round(currentSubtotal * 100) / 100;
+        //let currentSubtotal = Math.round((subtotal + parseFloat(deduction)) * 100) /100;
         $(".subtotal_exclude_shipping").text("$" + currentSubtotal);
-        if(currentSubtotal < 59) {
+        if (currentSubtotal == 0 ) {
+            $(".cart-shipping-fee").text("$0");
+            $(".cart-shipping-fee").css("color", "black");
+            $(".subtotal_include_shipping").text("$" + currentSubtotal);
+        } else if(currentSubtotal < 59) {
             $(".cart-shipping-fee").text("$10.00");
             $(".cart-shipping-fee").css("color", "black");
-            $(".subtotal_include_shipping").text("$" + (currentSubtotal+10));
+            $(".subtotal_include_shipping").text("$" + Math.round((currentSubtotal+10) * 100)/100);
         } else {
             $(".cart-shipping-fee").text("Free");
             $(".cart-shipping-fee").css("color", "green");
