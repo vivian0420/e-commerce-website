@@ -59,7 +59,7 @@ $(function () {
     } else {
         $(".cart-shipping-fee").text("$10.00");
         $(".cart-shipping-fee").css("color", "black");
-        $(".subtotal_include_shipping").text("$" + (subtotal+10));
+        $(".subtotal_include_shipping").text("$" + Math.round((subtotal+10) * 100) / 100);
     }
   }
 
