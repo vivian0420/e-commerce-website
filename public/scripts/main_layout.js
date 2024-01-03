@@ -1,7 +1,7 @@
 $(function () {
   $("head title").text($(".get-app-name").val());
   $(".website-name").text($(".get-app-name").val());
-  $("#footer").html("Today is: " + new Date().toLocaleDateString());
+  $("#footer-date").html("Today is: " + new Date().toLocaleDateString());
   $(".nav-cart-count").text($(".get-cartitem-amount").val());
   
   //active page management
