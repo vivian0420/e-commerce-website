@@ -8,7 +8,7 @@
     <div class="product-photo col-6">
       <img src={{item.path}} alt={{item.name}} />
     </div>
-    <div class="product-info col-6">
+    <div class="product-info col-6 align-items-start">
       <div class="product-price"><span class="fs-3 {{#ifEquals item.price item.newPrice}}original-price{{else}}text-decoration-line-through{{/ifEquals}}">${{item.price}}</span>&nbsp;
       <span class="fs-3 {{#ifEquals item.price item.newPrice}}d-none{{else}}text-danger{{/ifEquals}}">${{item.newPrice}}</span></div>
       <div class="produce-intro"><p>{{item.details}}</p></div>
@@ -25,13 +25,12 @@
             max={{item.quantity}}
           />
           <i class="bi bi-plus-circle fs-4"></i>
-          <div><span class="alert"></span></div>
         </div>
       </div>
-      <br />
-      <div class="addToCart pt-5">
-        <a  class="rounded-pill border-2" id="addToCart">Add to Cart</a>
+      <div class="addToCart pt-4">
+        <a class="rounded-pill border-2" id="addToCart">Add to Cart</a>
       </div>
+      <div class="alert-message mt-3"></div>
     </div>
   </div>
   <br/>

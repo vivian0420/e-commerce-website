@@ -100,11 +100,11 @@ function inc_quantity() {
   $(".quantity-input").val(function (i, oldval) {
     const maxLimit = $(".quantity-input").attr("max");
     if (++oldval > maxLimit) {
-      $(".alert").text("Quantity out of limit!")
-      $(".alert").css("color", "red");
-      $(".alert").show(3000);
+      $(".alert-message").text("Quantity out of limit!")
+      $(".alert-message").css("color", "red");
+      $(".alert-message").show(3000);
       setTimeout(function () {
-        $(".alert").hide();
+        $(".alert-message").hide();
       }, 3000);
       oldval = maxLimit;
     }
@@ -119,27 +119,27 @@ function inc_quantity() {
 function add_cart() {
   const maxLimit = parseInt($(".quantity-input").attr("max"));
   if (parseInt($(".quantity-input").val()) > maxLimit) {
-    $(".alert").text("Quantity out of limit!")
-    $(".alert").css("color", "red");
-    $(".alert").show(3000);
+    $(".alert-message").text("Quantity out of limit!")
+    $(".alert-message").css("color", "red");
+    $(".alert-message").show(3000);
     setTimeout(function () {
-      $(".alert").hide();
+      $(".alert-message").hide();
     }, 3000);
     $(".quantity-input").val(0);
   } else if (parseInt($(".quantity-input").val()) < 0) {
-    $(".alert").text("Negative quantity is not allowed")
-    $(".alert").css("color", "red");
-    $(".alert").show(3000);
+    $(".alert-message").text("Negative quantity is not allowed")
+    $(".alert-message").css("color", "red");
+    $(".alert-message").show(3000);
     setTimeout(function () {
-      $(".alert").hide();
+      $(".alert-message").hide();
     }, 3000);
     $(".quantity-input").val(0);
   } else if (parseInt($(".quantity-input").val()) === 0) {
-        $(".alert").text("Please enter a number!")
-        $(".alert").css("color", "red");
-        $(".alert").show(3000);
+        $(".alert-message").text("Please enter a number!")
+        $(".alert-message").css("color", "red");
+        $(".alert-message").show(3000);
         setTimeout(function () {
-          $(".alert").hide();
+          $(".alert-message").hide();
         }, 3000);
   } else {
     const id = $(".get-item-id").val();
@@ -152,30 +152,30 @@ function add_cart() {
 
     xhr.addEventListener("load", function(){
         if ($(".get-status").attr("id") == "login" && xhr.status == 200) {
-            $(".alert").text("Item(s) added to cart successfully!");
-            $(".alert").css("color", "green");
-            $(".alert").show(3000);
+            $(".alert-message").text("Item(s) added to cart successfully!");
+            $(".alert-message").css("color", "green");
+            $(".alert-message").show(3000);
             setTimeout(function () {
-                $(".alert").hide();
+                $(".alert-message").hide();
             }, 3000);
             let res = JSON.parse(xhr.response);  
             const sizeofcart = res.sizeOfCart;
             $(".nav-cart-count").text(sizeofcart);
             $(".quantity-input").val(0);
         }  else if (xhr.status == 400) {
-            $(".alert").text("Quantity out of limit!");
-            $(".alert").css("color", "red");
-            $(".alert").show(3000);
+            $(".alert-message").text("Quantity out of limit!");
+            $(".alert-message").css("color", "red");
+            $(".alert-message").show(3000);
             setTimeout(function () {
-                $(".alert").hide();
+                $(".alert-message").hide();
             }, 3000);
         }
         else {
-            $(".alert").text("Please log in before proceeding!");
-            $(".alert").css("color", "red");
-            $(".alert").show(3000);
+            $(".alert-message").text("Please log in before proceeding!");
+            $(".alert-message").css("color", "red");
+            $(".alert-message").show(3000);
             setTimeout(function () {
-                $(".alert").hide();
+                $(".alert-message").hide();
             }, 3000);
         }
     })
