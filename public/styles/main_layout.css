@@ -361,7 +361,7 @@ input::-webkit-inner-spin-button {
 }
 
 .cart_checkout {
-    height: 50vw;
+    height: 100vh;
 }
 
 .cart_buttons a {
@@ -381,6 +381,13 @@ input::-webkit-inner-spin-button {
 
 #gift-wrap-img {
     width: 22vw;
+    height: auto;
+    
+}
+
+.gift-wrap-section {
+    align-content: center;
+    text-align: center;
 }
 
 .login_prompt {
