@@ -1,7 +1,6 @@
 const config = {
     app: {
-        port: 8000,
-        host: "localhost",
+        port: 80,
         name: "Whoopee"
     },
     mongo: {
